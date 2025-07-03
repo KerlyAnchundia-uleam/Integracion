@@ -13,7 +13,7 @@ const products = [
     name: "Gorra Azul",
     price: 14.99,
     image: "https://images.unsplash.com/photo-1562572154-3bde9b1f25c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-  },
+  }
 ];
 
 const container = document.getElementById('product-list');
@@ -65,5 +65,4 @@ products.forEach(product => {
   container.appendChild(card);
 });
 
-// Inicializa el total si existe el span
 if (totalSpan) totalSpan.textContent = "0.00";
