@@ -3,16 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CATÁLOGO DE PRODUCTOS</title>
+  <title>Catálogo de Productos</title>
   <link rel="stylesheet" href="styles.css" />
-
-  <!-- 🧷 Dependencias de PayPhone -->
-  <link rel="stylesheet" href="https://cdn.payphonetodoesposible.com/box/v1.1/payphone-payment-box.css">
-  <script type="module" src="https://cdn.payphonetodoesposible.com/box/v1.1/payphone-payment-box.js"></script>
 </head>
 <body>
   <header>
-    <h1>CATÁLOGO DE PRODUCTOS</h1>
+    <h1>Catálogo de Productos</h1>
   </header>
 
   <main>
@@ -21,44 +17,10 @@
     <section class="carrito-section">
       <h2>🛒 Carrito</h2>
       <ul id="cart" class="cart-list"></ul>
-      <p>Total: $<span id="cart-total">0.00</span></p>
-
-      <!-- Botón decorativo previo -->
-     
-      <!-- 📦 Contenedor botón PayPhone -->
-      <div id="pp-button" style="margin-top: 20px;"></div>
+      <button id="pay-button">Pagar con PayPhone</button>
     </section>
   </main>
 
   <script src="script.js"></script>
-
-  <!-- ⚙️ Configuración PayPhone -->
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      const ppb = new PPaymentButtonBox({
-        token: 'GNOJF04yN-gcNplKUd3xVv4MU-b-46AVkhK5BbrBNIyapXRzShBnw23VSf-DWDbdTteh1jn3s066vttaPMG5-OurITx9ILfQtz9XnEOaWay1RnO9h8QAHmkS0EG8q7bBCCZ5XvHgUx11ryPmMQ8vSqR7yBHep3BFZtJf3nUNMUnbA1G1KGGicAutnBPRn91eK733BzCJm96gF6mXUyvm_sz3_PwW41t922T5WO5xlTF7LFWtptVwWjuntBKqmtUFMOvBDwaq-qBPfroe1s2_XoMXQyj65ZaVTpTN9X1G-F1xCKZg0x8O3RKHjjTbI6yF0ZEuRRAjT7ru3pGTbTIe2OrMiC0',
-        clientTransactionId: 'transaccion-001-' + Date.now(),
-        amount: 315,
-        amountWithoutTax: 200,
-        amountWithTax: 100,
-        tax: 15,
-        service: 0,
-        tip: 0,
-        currency: "USD",
-        storeId: "TU_STOREID_AQUI",
-        reference: "Pago por venta Fact#001",
-        lang: "es",
-        defaultMethod: "card",
-        timeZone: -5,
-        lat: "-1.831239",
-        lng: "-78.183406",
-        optionalParameter: "Parametro opcional",
-        phoneNumber: "+593999999999",
-        email: "cliente@email.com",
-        documentId: "1234567890",
-        identificationType: 1
-      }).render('pp-button');
-    });
-  </script>
 </body>
 </html>

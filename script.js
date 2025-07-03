@@ -38,6 +38,7 @@ function updateCart() {
     total += item.price * item.qty;
   });
   if (totalSpan) totalSpan.textContent = total.toFixed(2);
+  renderPayPhoneButton(total);
 }
 
 products.forEach(product => {
@@ -66,3 +67,55 @@ products.forEach(product => {
 });
 
 if (totalSpan) totalSpan.textContent = "0.00";
+
+// --- PAYPHONE BUTTON DINÁMICO ---
+function renderPayPhoneButton(total) {
+  // Elimina el botón anterior si existe
+  const ppButtonDiv = document.getElementById('pp-button');
+  ppButtonDiv.innerHTML = "";
+
+  // Si el carrito está vacío, no muestra el botón
+  if (total <= 0) return;
+
+  // Calcula valores para PayPhone (ejemplo: 12% IVA)
+  const amount = Math.round(total * 100); // PayPhone espera centavos
+  const tax = Math.round(total * 0.12 * 100);
+  const amountWithoutTax = Math.round((total - total * 0.12) * 100);
+  const amountWithTax = Math.round((total * 0.12) * 100);
+
+  // Espera a que el componente esté disponible
+  if (typeof PPaymentButtonBox !== "function") {
+    setTimeout(() => renderPayPhoneButton(total), 300);
+    return;
+  }
+
+  // ⚠️ Cambia "TU_STOREID_AQUI" por tu StoreId real de PayPhone
+  const ppb = new PPaymentButtonBox({
+    token: 'GNOJF04yN-gcNplKUd3xVv4MU-b-46AVkhK5BbrBNIyapXRzShBnw23VSf-DWDbdTteh1jn3s066vttaPMG5-OurITx9ILfQtz9XnEOaWay1RnO9h8QAHmkS0EG8q7bBCCZ5XvHgUx11ryPmMQ8vSqR7yBHep3BFZtJf3nUNMUnbA1G1KGGicAutnBPRn91eK733BzCJm96gF6mXUyvm_sz3_PwW41t922T5WO5xlTF7LFWtptVwWjuntBKqmtUFMOvBDwaq-qBPfroe1s2_XoMXQyj65ZaVTpTN9X1G-F1xCKZg0x8O3RKHjjTbI6yF0ZEuRRAjT7ru3pGTbTIe2OrMiC0',
+    clientTransactionId: 'transaccion-' + Date.now(),
+    amount: amount,
+    amountWithoutTax: amountWithoutTax,
+    amountWithTax: amountWithTax,
+    tax: tax,
+    service: 0,
+    tip: 0,
+    currency: "USD",
+    storeId: "TU_STOREID_AQUI", // <--- CAMBIA AQUÍ
+    reference: "Pago por venta carrito",
+    lang: "es",
+    defaultMethod: "card",
+    timeZone: -5,
+    lat: "-1.831239",
+    lng: "-78.183406",
+    optionalParameter: "Parametro opcional",
+    phoneNumber: "+593999999999",
+    email: "cliente@email.com",
+    documentId: "1234567890",
+    identificationType: 1
+  }).render('pp-button');
+}
+
+// Inicializa el botón al cargar
+window.addEventListener('DOMContentLoaded', () => {
+  updateCart();
+});
