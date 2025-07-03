@@ -18,42 +18,34 @@ const products = [
 
 const container = document.getElementById('product-list');
 const cartList = document.getElementById('cart');
-const totalSpan = document.getElementById('cart-total');
 const cart = [];
 
 function updateCart() {
   cartList.innerHTML = "";
-  let total = 0;
   cart.forEach((item, index) => {
     const li = document.createElement("li");
     li.innerHTML = `
       <span>${item.name} (x${item.qty}) - $${(item.price * item.qty).toFixed(2)}</span>
-      <button aria-label="Eliminar" style="margin-left:10px;background:#ff7e5f;color:#fff;border:none;border-radius:4px;cursor:pointer;padding:2px 8px;">✕</button>
+      <button style="margin-left:10px;background:#ff7e5f;color:#fff;border:none;border-radius:4px;cursor:pointer;padding:2px 8px;">✕</button>
     `;
     li.querySelector('button').addEventListener('click', () => {
       cart.splice(index, 1);
       updateCart();
     });
     cartList.appendChild(li);
-    total += item.price * item.qty;
   });
-  if (totalSpan) totalSpan.textContent = total.toFixed(2);
-  renderPayPhoneButton(total);
 }
 
 products.forEach(product => {
   const card = document.createElement('div');
   card.className = 'card';
-
   card.innerHTML = `
     <img src="${product.image}" alt="${product.name}">
     <h2>${product.name}</h2>
     <p>Precio: $${product.price.toFixed(2)}</p>
     <button>Añadir al carrito</button>
   `;
-
-  const button = card.querySelector('button');
-  button.addEventListener('click', () => {
+  card.querySelector('button').addEventListener('click', () => {
     const found = cart.find(item => item.name === product.name);
     if (found) {
       found.qty += 1;
@@ -62,52 +54,46 @@ products.forEach(product => {
     }
     updateCart();
   });
-
   container.appendChild(card);
 });
 
-if (totalSpan) totalSpan.textContent = "0.00";
+document.getElementById("pay-button").addEventListener("click", () => {
+  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  renderPayPhoneButton(total);
+});
 
-// --- PAYPHONE BUTTON DINÁMICO ---
 function renderPayPhoneButton(total) {
-  // Elimina el botón anterior si existe
-  const ppButtonDiv = document.getElementById('pp-button');
-  ppButtonDiv.innerHTML = "";
-
-  // Si el carrito está vacío, no muestra el botón
+  const ppDiv = document.getElementById('pp-button');
+  ppDiv.innerHTML = "";
   if (total <= 0) return;
 
-  // Calcula valores para PayPhone (ejemplo: 12% IVA)
-  const amount = Math.round(total * 100); // PayPhone espera centavos
+  const amount = Math.round(total * 100);
   const tax = Math.round(total * 0.12 * 100);
   const amountWithoutTax = Math.round((total - total * 0.12) * 100);
   const amountWithTax = Math.round((total * 0.12) * 100);
 
-  // Espera a que el componente esté disponible
   if (typeof PPaymentButtonBox !== "function") {
     setTimeout(() => renderPayPhoneButton(total), 300);
     return;
   }
 
-  // ⚠️ Cambia "TU_STOREID_AQUI" por tu StoreId real de PayPhone
-  const ppb = new PPaymentButtonBox({
-    token: 'GNOJF04yN-gcNplKUd3xVv4MU-b-46AVkhK5BbrBNIyapXRzShBnw23VSf-DWDbdTteh1jn3s066vttaPMG5-OurITx9ILfQtz9XnEOaWay1RnO9h8QAHmkS0EG8q7bBCCZ5XvHgUx11ryPmMQ8vSqR7yBHep3BFZtJf3nUNMUnbA1G1KGGicAutnBPRn91eK733BzCJm96gF6mXUyvm_sz3_PwW41t922T5WO5xlTF7LFWtptVwWjuntBKqmtUFMOvBDwaq-qBPfroe1s2_XoMXQyj65ZaVTpTN9X1G-F1xCKZg0x8O3RKHjjTbI6yF0ZEuRRAjT7ru3pGTbTIe2OrMiC0',
+  new PPaymentButtonBox({
+    token: 'qdkhpAskl56ppaqtybvmimdiCSnRlKdQkczqEUs1c8Y_c0tCi2QK49Lyw5y_Xsku9q6iQCM8duJpAUhoBofyCcYfVsXFhPJnhANQUVNyyFQDBkjeUtLoWv4VPvYDq8o5h6XwRPhA9MVi1t_dGyF41x3wAAh_GEih9OUl96oDvFTeJMGY4ZEcjkPSJMu3GpWyep4O6PF33KeoRimcsT17ql8psoAa0ey6dgq3xYKJRvH22sE_FYRowqblH9bcDt9sI_gO1GiNRy6QPqLo1lm0L7PXGbJNhIBxF20Ss5icK7eZFuvTumbDLktLaZmdCNSZZN4LmByeZYCjRy0c_NtW2G6v4iw', // Cambiar por tu token real
     clientTransactionId: 'transaccion-' + Date.now(),
-    amount: amount,
-    amountWithoutTax: amountWithoutTax,
-    amountWithTax: amountWithTax,
-    tax: tax,
+    amount,
+    amountWithoutTax,
+    amountWithTax,
+    tax,
     service: 0,
     tip: 0,
     currency: "USD",
-    storeId: "TU_STOREID_AQUI", // <--- CAMBIA AQUÍ
-    reference: "Pago por venta carrito",
+    storeId: "be384310-ebe7-423a-9584-eebdebe1012e", // Cambiar por tu Store ID real
+    reference: "Pago por carrito",
     lang: "es",
     defaultMethod: "card",
     timeZone: -5,
     lat: "-1.831239",
     lng: "-78.183406",
-    optionalParameter: "Parametro opcional",
     phoneNumber: "+593999999999",
     email: "cliente@email.com",
     documentId: "1234567890",
@@ -115,7 +101,7 @@ function renderPayPhoneButton(total) {
   }).render('pp-button');
 }
 
-// Inicializa el botón al cargar
+// Inicialización al cargar
 window.addEventListener('DOMContentLoaded', () => {
   updateCart();
 });
