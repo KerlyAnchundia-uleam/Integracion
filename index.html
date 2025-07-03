@@ -28,21 +28,33 @@
 
       <!-- 📦 Contenedor botón PayPhone -->
       <div id="pp-button" style="margin-top: 20px;"></div>
-    </section>
-  </main>
+        </section>
+      </main>
 
-  <script src="script.js"></script>
+      <script src="script.js"></script>
 
-  <!-- ⚙️ Configuración PayPhone -->
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      const ppb = new PPaymentButtonBox({
+      <!-- ⚙️ Configuración PayPhone dinámica -->
+      <script>
+        let ppb = null;
+
+        function renderPayPhoneBox(total) {
+      // Elimina la caja anterior si existe
+      if (ppb && typeof ppb.destroy === 'function') {
+        ppb.destroy();
+      }
+      // Calcula valores de impuestos y totales (ajusta según tu lógica)
+      const amount = Math.round(total * 100); // PayPhone espera centavos
+      const tax = Math.round(total * 0.12 * 100); // 12% IVA ejemplo
+      const amountWithoutTax = amount - tax;
+      const amountWithTax = amount;
+      // Renderiza la caja de pago con los valores actuales
+      ppb = new PPaymentButtonBox({
         token: 'qdkhpAskl56ppaqtybvmimdiCSnRlKdQkczqEUs1c8Y_c0tCi2QK49Lyw5y_Xsku9q6iQCM8duJpAUhoBofyCcYfVsXFhPJnhANQUVNyyFQDBkjeUtLoWv4VPvYDq8o5h6XwRPhA9MVi1t_dGyF41x3wAAh_GEih9OUl96oDvFTeJMGY4ZEcjkPSJMu3GpWyep4O6PF33KeoRimcsT17ql8psoAa0ey6dgq3xYKJRvH22sE_FYRowqblH9bcDt9sI_gO1GiNRy6QPqLo1lm0L7PXGbJNhIBxF20Ss5icK7eZFuvTumbDLktLaZmdCNSZZN4LmByeZYCjRy0c_NtW2G6v4iw',
         clientTransactionId: 'transaccion-001-' + Date.now(),
-        amount: 315,
-        amountWithoutTax: 200,
-        amountWithTax: 100,
-        tax: 15,
+        amount: amount,
+        amountWithoutTax: amountWithoutTax,
+        amountWithTax: amountWithTax,
+        tax: tax,
         service: 0,
         tip: 0,
         currency: "USD",
@@ -59,7 +71,26 @@
         documentId: "1234567890",
         identificationType: 1
       }).render('pp-button');
-    });
-  </script>
-</body>
-</html>
+        }
+
+        // Escucha cambios en el total del carrito
+        function getCartTotal() {
+      const totalSpan = document.getElementById('cart-total');
+      return parseFloat(totalSpan.textContent) || 0;
+        }
+
+        // Observa cambios en el total y actualiza la caja de pago
+        const cartTotalSpan = document.getElementById('cart-total');
+        const observer = new MutationObserver(() => {
+      const total = getCartTotal();
+      renderPayPhoneBox(total);
+        });
+        observer.observe(cartTotalSpan, { childList: true });
+
+        // Renderiza la caja de pago al cargar la página
+        window.addEventListener('DOMContentLoaded', () => {
+      renderPayPhoneBox(getCartTotal());
+        });
+      </script>
+    </body>
+    </html>
