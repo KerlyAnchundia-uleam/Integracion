@@ -38,7 +38,6 @@ function updateCart() {
     total += item.price * item.qty;
   });
   if (totalSpan) totalSpan.textContent = total.toFixed(2);
-  renderPayPhoneButton(total);
 }
 
 products.forEach(product => {
@@ -67,52 +66,3 @@ products.forEach(product => {
 });
 
 if (totalSpan) totalSpan.textContent = "0.00";
-
-// Renderiza el botón PayPhone con el total actual
-function renderPayPhoneButton(total) {
-  const ppButtonDiv = document.getElementById('pp-button');
-  ppButtonDiv.innerHTML = "";
-
-  if (total <= 0) return;
-
-  // Calcula valores para PayPhone (ejemplo: 12% IVA)
-  const amount = Math.round(total * 100); // PayPhone espera centavos
-  const tax = Math.round(total * 0.12 * 100);
-  const amountWithoutTax = Math.round((total - total * 0.12) * 100);
-  const amountWithTax = Math.round((total * 0.12) * 100);
-
-  // Espera a que el componente esté disponible
-  if (typeof PPaymentButtonBox !== "function") {
-    setTimeout(() => renderPayPhoneButton(total), 300);
-    return;
-  }
-
-  const ppb = new PPaymentButtonBox({
-    token: 'qdkhpAskl56ppaqtybvmimdiCSnRlKdQkczqEUs1c8Y_c0tCi2QK49Lyw5y_Xsku9q6iQCM8duJpAUhoBofyCcYfVsXFhPJnhANQUVNyyFQDBkjeUtLoWv4VPvYDq8o5h6XwRPhA9MVi1t_dGyF41x3wAAh_GEih9OUl96oDvFTeJMGY4ZEcjkPSJMu3GpWyep4O6PF33KeoRimcsT17ql8psoAa0ey6dgq3xYKJRvH22sE_FYRowqblH9bcDt9sI_gO1GiNRy6QPqLo1lm0L7PXGbJNhIBxF20Ss5icK7eZFuvTumbDLktLaZmdCNSZZN4LmByeZYCjRy0c_NtW2G6v4iw',
-    clientTransactionId: 'transaccion-' + Date.now(),
-    amount: amount,
-    amountWithoutTax: amountWithoutTax,
-    amountWithTax: amountWithTax,
-    tax: tax,
-    service: 0,
-    tip: 0,
-    currency: "USD",
-    storeId: "be384310-ebe7-423a-9584-eebdebe1012e",
-    reference: "Pago por venta carrito",
-    lang: "es",
-    defaultMethod: "card",
-    timeZone: -5,
-    lat: "-1.831239",
-    lng: "-78.183406",
-    optionalParameter: "Parametro opcional",
-    phoneNumber: "+593999999999",
-    email: "cliente@email.com",
-    documentId: "1234567890",
-    identificationType: 1
-  }).render('pp-button');
-}
-
-// Inicializa el botón al cargar
-window.addEventListener('DOMContentLoaded', () => {
-  updateCart();
-});

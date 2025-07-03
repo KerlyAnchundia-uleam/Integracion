@@ -23,8 +23,8 @@
       <ul id="cart" class="cart-list"></ul>
       <p>Total: $<span id="cart-total">0.00</span></p>
 
-      <!-- Botón decorativo previo (opcional, puedes quitarlo si no lo usas) -->
-      <!-- <button id="pay-button">Pagar con PayPhone</button> -->
+      <!-- Botón decorativo previo -->
+      <button id="pay-button">Pagar con PayPhone</button>
 
       <!-- 📦 Contenedor botón PayPhone -->
       <div id="pp-button" style="margin-top: 20px;"></div>
@@ -32,5 +32,34 @@
   </main>
 
   <script src="script.js"></script>
+
+  <!-- ⚙️ Configuración PayPhone -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const ppb = new PPaymentButtonBox({
+        token: 'qdkhpAskl56ppaqtybvmimdiCSnRlKdQkczqEUs1c8Y_c0tCi2QK49Lyw5y_Xsku9q6iQCM8duJpAUhoBofyCcYfVsXFhPJnhANQUVNyyFQDBkjeUtLoWv4VPvYDq8o5h6XwRPhA9MVi1t_dGyF41x3wAAh_GEih9OUl96oDvFTeJMGY4ZEcjkPSJMu3GpWyep4O6PF33KeoRimcsT17ql8psoAa0ey6dgq3xYKJRvH22sE_FYRowqblH9bcDt9sI_gO1GiNRy6QPqLo1lm0L7PXGbJNhIBxF20Ss5icK7eZFuvTumbDLktLaZmdCNSZZN4LmByeZYCjRy0c_NtW2G6v4iw',
+        clientTransactionId: 'transaccion-001-' + Date.now(),
+        amount: 315,
+        amountWithoutTax: 200,
+        amountWithTax: 100,
+        tax: 15,
+        service: 0,
+        tip: 0,
+        currency: "USD",
+        storeId: "be384310-ebe7-423a-9584-eebdebe1012e",
+        reference: "Pago por venta Fact#001",
+        lang: "es",
+        defaultMethod: "card",
+        timeZone: -5,
+        lat: "-1.831239",
+        lng: "-78.183406",
+        optionalParameter: "Parametro opcional",
+        phoneNumber: "+593999999999",
+        email: "cliente@email.com",
+        documentId: "1234567890",
+        identificationType: 1
+      }).render('pp-button');
+    });
+  </script>
 </body>
 </html>
