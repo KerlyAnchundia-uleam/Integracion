@@ -2,19 +2,21 @@ const products = [
   {
     name: "Camiseta Roja",
     price: 19.99,
-    image: "https://images.unsplash.com/photo-1585386959984-a415522e3f8e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    image: "https://i.pinimg.com/736x/cc/00/28/cc00287d8819e534f4c849679bf99e7d.jpg"
   },
   {
     name: "Zapatos Negros",
     price: 49.99,
-    image: "https://images.unsplash.com/photo-1593032465171-8f0f7a6885c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    image: "https://i.pinimg.com/736x/ae/88/a0/ae88a0a55e339b1a71f92fc8d17ca65a.jpg"
   },
   {
     name: "Gorra Azul",
     price: 14.99,
-    image: "https://images.unsplash.com/photo-1562572154-3bde9b1f25c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    image: "https://i.pinimg.com/736x/8d/26/44/8d264448f7a72ce897b19b427d07b0e8.jpg"
   }
 ];
+
+
 
 const container = document.getElementById('product-list');
 const cartList = document.getElementById('cart');
@@ -65,4 +67,5 @@ products.forEach(product => {
   container.appendChild(card);
 });
 
+// Inicializa el total si existe el span
 if (totalSpan) totalSpan.textContent = "0.00";

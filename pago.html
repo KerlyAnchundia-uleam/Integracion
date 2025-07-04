@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Pago con PayPhone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Estilos del botón de pago -->
+  <link rel="stylesheet" href="https://cdn.payphonetodoesposible.com/box/v1.1/payphone-payment-box.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f8f8f8, #ffe5d0);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      color: #ff7e5f;
+      margin-bottom: 2rem;
+    }
+
+    #pp-button {
+      margin-top: 2rem;
+    }
+
+    .volver {
+      margin-top: 30px;
+      background-color: #ff7e5f;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Confirmar Pago</h1>
+
+  <!-- Contenedor del botón de PayPhone -->
+  <div id="pp-button"></div>
+
+  <!-- Botón de regreso al catálogo -->
+  <a class="volver" href="index.html">⬅ Volver al catálogo</a>
+
+  <!-- Script del botón de pago -->
+  <script type="module" src="https://cdn.payphonetodoesposible.com/box/v1.1/payphone-payment-box.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      new PPaymentButtonBox({
+        token: 'ACA_TU_TOKEN',
+        clientTransactionId: 'VENTA-001',
+        amount: 315, // en centavos
+        amountWithoutTax: 200,
+        amountWithTax: 100,
+        tax: 15,
+        currency: "USD",
+        storeId: "TU_STOREID",
+        reference: "Pago por venta catálogo",
+        lang: "es",
+        defaultMethod: "card",
+        timeZone: -5,
+        lat: "-1.831239",
+        lng: "-78.183406"
+      }).render('pp-button');
+    });
+  </script>
+
+</body>
+</html>
