@@ -15,6 +15,7 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
+      margin: 0;
     }
 
     h1 {
@@ -62,13 +63,20 @@
         tax: 15,
         currency: "USD",
         storeId: "be384310-ebe7-423a-9584-eebdebe1012e",
-        responseUrl: "https://lively-bienenstitch-f226a8.netlify.app/confirmacion.html",
+        responseUrl: "https://lively-bienenstitch-f226a8.netlify.app/gracias.html",
         reference: "Pago por venta catálogo",
         lang: "es",
         defaultMethod: "card",
         timeZone: -5,
         lat: "-1.831239",
-        lng: "-78.183406"
+        lng: "-78.183406",
+        onComplete: (response) => {
+          if (response.success) {
+            window.location.href = "gracias.html"; // Redirige si el pago fue exitoso
+          } else {
+            alert("El pago no se completó correctamente.");
+          }
+        }
       }).render('pp-button');
     });
   </script>
