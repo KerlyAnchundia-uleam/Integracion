@@ -1,6 +1,6 @@
 const products = [
   { name: "Camiseta Roja", price: 19.99, image: "https://i.pinimg.com/736x/85/8a/d8/858ad87209be65fc584e83cd13771d26.jpg" },
-  { name: "Zapatos Negros", price: 49.99, image: "https://i.pinimg.com/736x/08/c2/0d/08c20d0d4c6a9d65b87d2fdd393cb1ed.jpg" },
+  { name: "Zapatos Negros", price: 49.99, image: "https://i.pinimg.com/736x/ae/88/a0/ae88a0a55e339b1a71f92fc8d17ca65a.jpg" },
   { name: "Gorra Azul", price: 14.99, image: "https://i.pinimg.com/736x/6b/b4/cf/6bb4cf69d3df45a6c7803d8a149f23be.jpg" }
 ];
 
